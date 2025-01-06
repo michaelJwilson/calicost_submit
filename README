@@ -3,3 +3,5 @@ to the required settings and infrastructure.
 
 This is achieved by updating the pre-existing config files for the
 runs and calling CalicoST accordingly.
+
+Note:  slurm based.  Runs on e.g. adroit.

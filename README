@@ -1,7 +1,7 @@
-Contains scripts to relaunch the CalicoST simulation runs according
+Repository of scripts to re-launch the CalicoST simulation runs according
 to the required settings and infrastructure.
 
-This is achieved by updating the pre-existing config files for the
-runs and calling CalicoST accordingly.
+This is achieved by updating the pre-existing config files @ zenodo & calling
+CalicoST accordingly.
 
-Note:  slurm based.  Runs on e.g. adroit.
+Note:  slurm based - runs on adroit, etc.

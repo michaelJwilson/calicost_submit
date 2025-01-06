@@ -1,0 +1,5 @@
+Contains scripts to relaunch the CalicoST simulation runs according
+to the required settings and infrastructure.
+
+This is achieved by updating the pre-existing config files for the
+runs and calling CalicoST accordingly.

@@ -98,7 +98,7 @@ if __name__ == "__main__":
         simid = Path(fpath).parent.name
         
         config = read_config(fpath)
-        config["output_dir"] = f"/scratch/network/mw9568/Calicost/bafonly/{simid}"
+        config["output_dir"] = f"/scratch/network/mw9568/Calicost/bafonly_nomerge/{simid}"
 
         # NB patch location of required supplementary files.
         config["filtergenelist_file"] = f"{repo}/GRCh38_resources/ig_gene_list.txt"

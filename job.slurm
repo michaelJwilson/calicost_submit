@@ -26,4 +26,4 @@ SIMID=${SIMID:-"numcnas1.2_cnasize1e7_ploidy2_random0"}
 
 echo "(SLURM_ARRAY_JOB_ID, SIMID, SLURM_ARRAY_TASK_ID) == ($SLURM_ARRAY_JOB_ID, $SIMID, $SLURM_ARRAY_TASK_ID) @ " $(hostname)
 
-python /home/mw9568/repos/CalicoST/src/calicost/calicost_main.py -c "/scratch/network/mw9568/Calicost/bafonly/"$SIMID"/configfile"$SLURM_ARRAY_TASK_ID
+python /home/mw9568/repos/CalicoST/src/calicost/calicost_main.py -c "/scratch/network/mw9568/Calicost/bafonly_nomerge/"$SIMID"/configfile"$SLURM_ARRAY_TASK_ID

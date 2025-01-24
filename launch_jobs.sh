@@ -5,6 +5,7 @@
 # realizations in each case.
 simids=(
     "numcnas1.2_cnasize1e7_ploidy2_random0"
+    "numcnas1.2_cnasize1e7_ploidy2_random1"
     "numcnas3.3_cnasize5e7_ploidy2_random9"
     "numcnas6.3_cnasize5e7_ploidy2_random6"
 )

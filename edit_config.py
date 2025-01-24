@@ -78,7 +78,7 @@ if __name__ == "__main__":
     repo = "/home/mw9568/repos/CalicoST"
 
     # NB zenodo simulation download.    
-    root = "/scratch/network/mw9568/zenodo"
+    root = "/scratch/network/mw9568/zenodo/"
     sim_dir = f"{root}/CalicoST_simulation_deposit/simulated_data_related"
     
     # NB relative path to the CalicoST results for each simulation run.

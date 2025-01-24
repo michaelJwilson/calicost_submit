@@ -4,6 +4,13 @@ to the required settings and infrastructure.
 This is achieved by updating the pre-existing config files @ zenodo & calling
 CalicoST accordingly.
 
+See available simulations with:
+    unzip -l CalicoST_simulation_deposit.zip | sed -n 's|.*/\(numcnas[0-9.]*_cnasize[0-9a-z]*_ploidy[0-9]*_random[0-9]*\)/.*|\1|p' | sort | uniq > simids.txt
+
+Extract a given simulation with:
+    unzip CalicoST_simulation_deposit.zip */numcnas6.3_cnasize5e7_ploidy2_random6/*
+
+
 Notes:
   -  slurm based - runs on adroit, etc.
   -  use stat (aliases to squeue -u mw9568) to see submitted job status.

@@ -67,6 +67,7 @@ def read_config(fpath):
 def validate_config(config):
     # NB CalicoST WARNING - n_clones_baf is not a valid configuration parameter!
     assert "n_clones_baf" not in config, "n_clones_baf is not a valid parameter"
+    assert config["bafonly"] == "True", "bafonly=False required to produce full output, e.g. plots." 
     
 def write_config(config, opath):
     with open(opath, "w") as oo:
@@ -110,13 +111,13 @@ if __name__ == "__main__":
 
         # NB re-assign to the desired settings.
         #    See: https://calicost.readthedocs.io/en/latest/parameters.html
-        config["bafonly"] = "True"
+        config["bafonly"] = "False"
 
         # NB The number of clones to infer using only BAF signals. Default is 3.
         config["n_clones"] = 3
 
         # NB The number of clones to refine for each BAF-identified clone using RDR and BAF signals. Default is 2. 
-        config["n_clones_rdr"] = 2
+        config["n_clones_rdr"] = 1
         
         # pprint.pprint(config)
 

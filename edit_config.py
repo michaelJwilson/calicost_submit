@@ -66,7 +66,7 @@ def read_config(fpath):
 
 def validate_config(config):
     # NB CalicoST WARNING - n_clones_baf is not a valid configuration parameter!
-    assert "n_clones_baf" not in config
+    assert "n_clones_baf" not in config, "n_clones_baf is not a valid parameter"
     
 def write_config(config, opath):
     with open(opath, "w") as oo:
@@ -77,14 +77,14 @@ def write_config(config, opath):
 if __name__ == "__main__":
     repo = "/home/mw9568/repos/CalicoST"
 
-    # NB zenodo simulation download    
+    # NB zenodo simulation download.    
     root = "/scratch/network/mw9568/zenodo"
     sim_dir = f"{root}/CalicoST_simulation_deposit/simulated_data_related"
-
+    
     # NB relative path to the CalicoST results for each simulation run.
     spath = "CalicoST_simulation_deposit/nomixing_calicost_related/"
     
-    configs = find_configs(config_root)
+    configs = find_configs(f"{root}/{spath}")
     
     pprint.pprint(configs)
 
@@ -110,13 +110,13 @@ if __name__ == "__main__":
 
         # NB re-assign to the desired settings.
         #    See: https://calicost.readthedocs.io/en/latest/parameters.html
-        config["bafonly"] = "False"
+        config["bafonly"] = "True"
 
         # NB The number of clones to infer using only BAF signals. Default is 3.
         config["n_clones"] = 3
 
         # NB The number of clones to refine for each BAF-identified clone using RDR and BAF signals. Default is 2. 
-        config["n_clones_rdr"] = 1
+        config["n_clones_rdr"] = 2
         
         # pprint.pprint(config)
 
@@ -128,3 +128,5 @@ if __name__ == "__main__":
             print(f"Writing {config['output_dir']}/configfile{seed}")
         
             write_config(config, f"{config['output_dir']}/configfile{seed}")
+        else:
+            print(f"Skipping writing of {config['output_dir']}/configfile{seed}")

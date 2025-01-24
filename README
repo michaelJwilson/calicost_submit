@@ -5,3 +5,14 @@ This is achieved by updating the pre-existing config files @ zenodo & calling
 CalicoST accordingly.
 
 Note:  slurm based - runs on adroit, etc.
+
+Available scripts:
+
+- edit_config.py  Find existing configs, update them with required changes & write
+  		  to new, specified directory.
+
+- job.slurm       Launch a slurm job array for all CalicoST initializations (0-4)
+  		  for a given sim id., e.g. numcnas1.2_cnasize1e7_ploidy2_random0.
+		  Corresponding slurm output & errors available at ./jobs/<JOBID>
+		 
+- launch_jobs.sh  Wrapper that calls job.slurm for all entries in an array of SIMIDs.

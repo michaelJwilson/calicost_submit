@@ -21,7 +21,7 @@ module load anaconda3/2024.6
 
 conda activate calicost_env
 
-# NB sbatch --export=SIMID=$simid with a default if not provided.
+# NB sbatch --export=SIMID=$simid, with a default of numcnas1.2_cnasize1e7_ploidy2_random0 if not provided.
 SIMID=${SIMID:-"numcnas1.2_cnasize1e7_ploidy2_random0"}
 
 echo "(SLURM_ARRAY_JOB_ID, SIMID, SLURM_ARRAY_TASK_ID) == ($SLURM_ARRAY_JOB_ID, $SIMID, $SLURM_ARRAY_TASK_ID) @ " $(hostname)

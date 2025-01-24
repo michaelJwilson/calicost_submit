@@ -27,16 +27,26 @@ done < <(find "$base_dir" -mindepth 1 -maxdepth 1 -type d)
 
 iterations=0
 
+if [ -d "jobs" ]; then
+    rm -r "jobs"
+    
+    echo "Removed existing ./jobs directory"
+    echo
+fi
+
+mkdir "jobs"
+
 for simid in "${simids[@]}"; do
     job_id=$(sbatch --export=SIMID=$simid job.slurm | awk '{print $4}')
+    datetime=$(date '+%Y-%m-%d %H:%M:%S')
     
-    echo "Submitted batch job $job_id for simid: $simid"
+    echo "$job_id  $simid  $datetime" >> jobs/jobs.txt
     
-    # sbatch --export=SIMID=$simid job.slurm
+    sbatch --export=SIMID=$simid job.slurm
 
     ((iterations++))
 
-    if [ "$iterations" -ge 5 ]; then
+    if [ "$iterations" -ge 2 ]; then
         break
     fi
     

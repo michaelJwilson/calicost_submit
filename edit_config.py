@@ -48,7 +48,7 @@ def read_config(fpath):
     Read the configuration as key, value pairs, i.e. as
     a dictionary / hash map.
     """
-    print(f"Reading config @ {fpath}")
+    # print(f"Reading config @ {fpath}")
     
     config_dict = {}
     
@@ -77,9 +77,10 @@ def write_config(config, opath):
             
 if __name__ == "__main__":
     repo = "/home/mw9568/repos/CalicoST"
-
+    output_root = f"/scratch/network/mw9568/Calicost/bafonly_nomerge/"
+    
     # NB zenodo simulation download.    
-    root = "/scratch/network/mw9568/zenodo/"
+    root = "/scratch/network/mw9568/zenodo"
     sim_dir = f"{root}/CalicoST_simulation_deposit/simulated_data_related"
     
     # NB relative path to the CalicoST results for each simulation run.
@@ -87,10 +88,15 @@ if __name__ == "__main__":
     
     configs = find_configs(f"{root}/{spath}")
     
-    pprint.pprint(configs)
+    # pprint.pprint(configs)
 
     write_new = input("Write new configs? [Y/N] ").strip().upper() == "Y"
 
+    if write_new:
+        print(f"Writing to {output_root}")
+    else:
+        print(f"Skipping writing to {output_root}")
+    
     # EG numcnas1.2_cnasize1e7_ploidy2_random0
     for fpath in configs:
         # NB the simulation realization id.
@@ -98,7 +104,7 @@ if __name__ == "__main__":
         simid = Path(fpath).parent.name
         
         config = read_config(fpath)
-        config["output_dir"] = f"/scratch/network/mw9568/Calicost/bafonly_nomerge/{simid}"
+        config["output_dir"] = f"{output_root}/{simid}"
 
         # NB patch location of required supplementary files.
         config["filtergenelist_file"] = f"{repo}/GRCh38_resources/ig_gene_list.txt"
@@ -125,9 +131,5 @@ if __name__ == "__main__":
 
         if write_new:
             Path(f"{config['output_dir']}").mkdir(parents=True, exist_ok=True)
-
-            print(f"Writing {config['output_dir']}/configfile{seed}")
-        
+            
             write_config(config, f"{config['output_dir']}/configfile{seed}")
-        else:
-            print(f"Skipping writing of {config['output_dir']}/configfile{seed}")

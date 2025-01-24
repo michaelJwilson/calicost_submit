@@ -88,10 +88,7 @@ if __name__ == "__main__":
     
     pprint.pprint(configs)
 
-    proceed = input("Proceed with new config generation? [Y/N] ").strip().upper() == "Y"
-
-    if not proceed:
-        exit(0)
+    write_new = input("Write new configs? [Y/N] ").strip().upper() == "Y"
 
     # EG numcnas1.2_cnasize1e7_ploidy2_random0
     for fpath in configs:
@@ -125,9 +122,9 @@ if __name__ == "__main__":
 
         validate_config(config)
 
-        # NB write new, validated config.
-        Path(f"{config['output_dir']}").mkdir(parents=True, exist_ok=True)
+        if write_new:
+            Path(f"{config['output_dir']}").mkdir(parents=True, exist_ok=True)
 
-        print(f"Writing {config['output_dir']}/configfile{seed}")
+            print(f"Writing {config['output_dir']}/configfile{seed}")
         
-        write_config(config, f"{config['output_dir']}/configfile{seed}")
+            write_config(config, f"{config['output_dir']}/configfile{seed}")

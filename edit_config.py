@@ -6,19 +6,23 @@ from pathlib import Path
 Updates pre-exisiting config files from the CalicoST simulation runs 
 to achieve the desired settings and environment.
 
-Key values to be updated:
+Environment-specific variables to be updated:
 
 - 'filtergenelist_file': '/n/fs/ragr-data/users/congma/references/cellranger_refdata-gex-GRCh38-2020-A/genes/ig_gene_list.txt',
 - 'filterregion_file': '/n/fs/ragr-data/users/congma/references/cellranger_refdata-gex-GRCh38-2020-A/genes/HLA_regions.bed',
 - 'geneticmap_file': '/u/congma/ragr-data/users/congma/Codes/CalicoST/resources/genetic_map_GRCh38_merged.tab',
 - 'hgtable_file': '/u/congma/ragr-data/users/congma/Codes/STARCH_crazydev/hgTables_hg38_gencode.txt',
+
 - 'snp_dir': '/u/congma/ragr-data/users/congma/Datasets/CalicoST_simulation/simulated_data_related/numcnas1.2_cnasize1e7_ploidy2_random0',
 - 'spaceranger_dir': '/u/congma/ragr-data/users/congma/Datasets/CalicoST_simulation/simulated_data_related/numcnas1.2_cnasize1e7_ploidy2_random0',
 
 - ** 'output_dir': '/u/congma/ragr-data/users/congma/Datasets/CalicoST_simulation/nomixing_calicost_related/numcnas1.2_cnasize1e7_ploidy2_random0',
-"""
 
-__to_patch = ("filtergenelist_file", "filterregion_file", "geneticmap_file", "hgtable_file")
+Run-specific variables to be updated:
+
+- 'n_clones':
+- 'n_clones_rdr'
+"""
 
 def find_configs(root):
     """
@@ -26,6 +30,8 @@ def find_configs(root):
     given root directory.
     """
     configs = []
+
+    print(f"Searching {root} for existing configs.")
     
     for dirpath, dirnames, filenames in os.walk(root):
         for filename in filenames:
@@ -58,7 +64,10 @@ def read_config(fpath):
             
     return config_dict
 
-
+def validate_config(config):
+    # NB CalicoST WARNING - n_clones_baf is not a valid configuration parameter!
+    assert "n_clones_baf" not in config
+    
 def write_config(config, opath):
     with open(opath, "w") as oo:
         for key, value in config.items():
@@ -74,9 +83,9 @@ if __name__ == "__main__":
 
     # NB relative path to the CalicoST results for each simulation run.
     spath = "CalicoST_simulation_deposit/nomixing_calicost_related/"
-
-    configs = find_configs(f"{root}/{spath}")
-
+    
+    configs = find_configs(config_root)
+    
     pprint.pprint(configs)
 
     proceed = input("Proceed with new config generation? [Y/N] ").strip().upper() == "Y"
@@ -86,14 +95,14 @@ if __name__ == "__main__":
 
     # EG numcnas1.2_cnasize1e7_ploidy2_random0
     for fpath in configs:
-        # NB the simulation realization
+        # NB the simulation realization id.
         seed = fpath[-1]
         simid = Path(fpath).parent.name
         
         config = read_config(fpath)
         config["output_dir"] = f"/scratch/network/mw9568/Calicost/bafonly/{simid}"
 
-        # NB re-assign where to find required supplementary files.
+        # NB patch location of required supplementary files.
         config["filtergenelist_file"] = f"{repo}/GRCh38_resources/ig_gene_list.txt"
         config["filterregion_file"] = f"{repo}/GRCh38_resources/HLA_regions.bed"
         config["geneticmap_file"] = f"{repo}/GRCh38_resources/genetic_map_GRCh38_merged.tab.gz"
@@ -103,12 +112,20 @@ if __name__ == "__main__":
         config["spaceranger_dir"] = f"{sim_dir}/{simid}"
 
         # NB re-assign to the desired settings.
+        #    See: https://calicost.readthedocs.io/en/latest/parameters.html
         config["bafonly"] = "False"
-        config["n_clones_baf"] = 3
+
+        # NB The number of clones to infer using only BAF signals. Default is 3.
+        config["n_clones"] = 3
+
+        # NB The number of clones to refine for each BAF-identified clone using RDR and BAF signals. Default is 2. 
         config["n_clones_rdr"] = 1
         
         # pprint.pprint(config)
 
+        validate_config(config)
+
+        # NB write new, validated config.
         Path(f"{config['output_dir']}").mkdir(parents=True, exist_ok=True)
 
         print(f"Writing {config['output_dir']}/configfile{seed}")
